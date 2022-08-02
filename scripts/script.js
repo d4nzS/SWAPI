@@ -12,14 +12,22 @@ init(mainURL);
 
 paginationList.onclick = onChoosePaginationItem;
 
-async function getData(url) {
-    const response = await fetch(url);
+async function getData(queryParam, queryVal) {
+    const queryURL = new URL(mainURL.href);
+
+    if (queryParam && queryVal) {
+        queryURL.searchParams.set(queryParam, queryVal);
+    }
+
+    console.log(queryURL.href); // for tests
+
+    const response = await fetch(queryURL.href);
 
     return await response.json();
 }
 
-function init(url) {
-    getData(url).then(drawPage);
+function init() {
+    getData('', '').then(drawPage);
 }
 
 function onChoosePaginationItem(event) {
@@ -29,10 +37,7 @@ function onChoosePaginationItem(event) {
         return;
     }
 
-    const queryURL = new URL(mainURL.href);
-    queryURL.searchParams.set('page', paginationItem.textContent);
-
-    getData(queryURL).then(drawPage);
+    getData('page', paginationItem.textContent).then(drawPage);
 }
 
 function drawPage(pageInfo) {
