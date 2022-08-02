@@ -8,8 +8,10 @@ const search = document.querySelector('.header__search');
 const cardList = document.querySelector('.main__list');
 const paginationList = document.querySelector('.footer__list');
 
-init(mainURL);
+init();
 
+let timer;
+search.oninput = onSearch;
 paginationList.onclick = onChoosePaginationItem;
 
 async function getData(queryParam, queryVal) {
@@ -30,6 +32,12 @@ function init() {
     getData('', '').then(drawPage);
 }
 
+function onSearch() {
+    clearTimeout(timer);
+    timer = setTimeout(() => getData('search', search.value)
+        .then(drawPage), 500);
+}
+
 function onChoosePaginationItem(event) {
     const paginationItem = event.target.closest('.footer__item');
 
@@ -41,10 +49,8 @@ function onChoosePaginationItem(event) {
 }
 
 function drawPage(pageInfo) {
-    if (pageInfo.count > 0)  {
-        drawCards(pageInfo.results);
-        drawPagination(Math.ceil(pageInfo.count / 10));
-    }
+    drawCards(pageInfo.results);
+    drawPagination(Math.ceil(pageInfo.count / 10));
 }
 
 function drawCards(cardsArr) {
