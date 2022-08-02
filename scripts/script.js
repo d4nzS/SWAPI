@@ -10,13 +10,32 @@ const paginationList = document.querySelector('.footer__list');
 
 init(mainURL);
 
+paginationList.onclick = onChoosePaginationItem;
+
+async function getData(url) {
+    const response = await fetch(url);
+
+    return await response.json();
+}
+
 function init(url) {
     getData(url).then(drawPage);
 }
 
-function drawPage(pageInfo) {
-    console.log(pageInfo)
+function onChoosePaginationItem(event) {
+    const paginationItem = event.target.closest('.footer__item');
 
+    if (!paginationItem) {
+        return;
+    }
+
+    const queryURL = new URL(mainURL.href);
+    queryURL.searchParams.set('page', paginationItem.textContent);
+
+    getData(queryURL).then(drawPage);
+}
+
+function drawPage(pageInfo) {
     if (pageInfo.count > 0)  {
         drawCards(pageInfo.results);
         drawPagination(Math.ceil(pageInfo.count / 10));
@@ -30,15 +49,11 @@ function drawCards(cardsArr) {
 }
 
 function drawPagination(paginationItemsAmount) {
+    paginationList.innerHTML = '';
+
     for (let i = 1; i <= paginationItemsAmount; i++) {
         paginationList.innerHTML += `
             <li class="footer__item ${i === 1 ? 'footer__item_active' : ''}">${i}</li>
         `;
     }
-}
-
-async function getData(url) {
-    const response = await fetch(url);
-
-    return await response.json();
 }
