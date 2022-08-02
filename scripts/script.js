@@ -18,15 +18,23 @@ function drawPage(pageInfo) {
     console.log(pageInfo)
 
     if (pageInfo.count > 0)  {
-        const paginationListCount = Math.ceil(pageInfo.count / 10);
-
         drawCards(pageInfo.results);
-        // drawPagination();
+        drawPagination(Math.ceil(pageInfo.count / 10));
     }
 }
 
-function drawCards(arr) {
-    cardList.innerHTML = arr.reduce((prevPersons, person) => prevPersons += `<li class="main__item">${person.name}</li>`, '')
+function drawCards(cardsArr) {
+    cardList.innerHTML = cardsArr.reduce((prevPersons, person) => prevPersons + `
+        <li class="main__item">${person.name}</li>
+    `, '');
+}
+
+function drawPagination(paginationItemsAmount) {
+    for (let i = 1; i <= paginationItemsAmount; i++) {
+        paginationList.innerHTML += `
+            <li class="footer__item ${i === 1 ? 'footer__item_active' : ''}">${i}</li>
+        `;
+    }
 }
 
 async function getData(url) {
