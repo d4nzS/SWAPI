@@ -18,7 +18,7 @@
 }
 
 body {
-    background-image: url(../images/background1.jpg);
+    background-image: url(../images/background.jpg);
     background-size: cover;
     background-position: center center;
     background-attachment: fixed;
@@ -36,7 +36,7 @@ ul {
 
 .container {
     max-width: 1250px;
-    padding: 20px 10px 35px;
+    padding: 20px 10px 30px;
     margin: 0 auto;
 }
 
@@ -54,14 +54,42 @@ ul {
 }
 .header__search {
     width: 180px;
-    height: 25px;
+    height: 30px;
     padding: 0 10px;
-    border: 3px solid #F9F017;
+    border: 5px double #F9F017;
+    font-family: "Roboto Medium", sans-serif;
+    color: #7032AC;
+    background-color: transparent;
+}
+.header__search::-webkit-input-placeholder {
+    font-family: "Roboto Medium", sans-serif;
+    font-size: 14px;
+    color: #FFF;
+}
+.header__search::-moz-placeholder {
+    font-family: "Roboto Medium", sans-serif;
+    font-size: 14px;
+    color: #FFF;
+}
+.header__search:-ms-input-placeholder {
+    font-family: "Roboto Medium", sans-serif;
+    font-size: 14px;
+    color: #FFF;
+}
+.header__search::-ms-input-placeholder {
+    font-family: "Roboto Medium", sans-serif;
+    font-size: 14px;
+    color: #FFF;
+}
+.header__search::placeholder {
+    font-family: "Roboto Medium", sans-serif;
+    font-size: 14px;
+    color: #FFF;
 }
 
-.main {
+.main__nav {
     min-height: 625px;
-    margin-bottom: 35px;
+    margin-bottom: 30px;
 }
 .main__list {
     display: -ms-grid;
@@ -76,7 +104,7 @@ ul {
     position: relative;
     height: 300px;
     cursor: pointer;
-    background-image: url(../images/card-image.png);
+    background-image: url(../images/card.png);
     background-size: cover;
     background-position: center center;
 }
@@ -105,6 +133,45 @@ ul {
     opacity: 0.6;
 }
 
+.card-info {
+    max-width: 500px;
+    font-size: 26px;
+    color: #FFF;
+    margin: 0 auto;
+}
+.card-info__item {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-pack: justify;
+        -ms-flex-pack: justify;
+            justify-content: space-between;
+    margin: 40px 0;
+}
+.card-info__item_selected {
+    font-family: "Roboto Medium", sans-serif;
+    text-transform: uppercase;
+    color: #F9F017;
+}
+.card-info__button {
+    display: block;
+    padding: 5px 15px;
+    margin: 0 auto;
+    border: 5px double #F9F017;
+    cursor: pointer;
+    font-family: "Roboto Medium", sans-serif;
+    font-size: 20px;
+    color: #FFF;
+    text-transform: uppercase;
+    background-color: transparent;
+    -webkit-transition: 0.2s ease-out;
+    transition: 0.2s ease-out;
+}
+.card-info__button:hover {
+    color: #7032AC;
+    background-color: #F9F017;
+}
+
 .footer__list {
     text-align: center;
 }
@@ -121,5 +188,10 @@ ul {
     font-size: 20px;
 }
 .footer__item_active {
+    cursor: default;
+    text-decoration: underline;
     color: #7032AC;
+}
+.footer__item_active:hover {
+    font-size: 14px;
 }

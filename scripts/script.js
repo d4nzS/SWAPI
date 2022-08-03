@@ -38,8 +38,6 @@ async function getData(url, queryParams) {
             .forEach(param => queryURL.searchParams.set(param, queryParams[param]));
     }
 
-    console.log(queryURL.href); // for tests
-
     const response = await fetch(queryURL.href);
 
     return await response.json();
@@ -117,6 +115,9 @@ function drawCardInfo(personInfo) {
     cardInfo.hidden = false;
     cardInfoList.innerHTML = Object.keys(personParams)
         .reduce((prevParams, param) => prevParams + `
-            <li class=".card-info__item">${personParams[param]} ${personInfo[param]}</li>
+            <li class="card-info__item">
+                <span class="card-info__item_selected">${personParams[param]}</span>
+                <span>${personInfo[param]}</span>
+            </li>
         `, '');
 }
