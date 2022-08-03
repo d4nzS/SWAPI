@@ -1,21 +1,37 @@
 'use strict';
 
-const SWAPI_URl = new URL('/api', 'https://swapi.dev');
+const SWAPI_URL = new URL('/api', 'https://swapi.dev');
 const category = '/people';
-const mainURL = new URL(SWAPI_URl.pathname + category, SWAPI_URl);
+const mainURL = new URL(SWAPI_URL.pathname + category, SWAPI_URL);
+
+const personParams = {
+    name: 'Name',
+    birth_year: 'Birth year',
+    gender: 'Gender',
+    mass: 'Mass',
+    height: 'Height',
+    skin_color: 'Skin color',
+    eye_color: 'Eye color'
+};
+
+const hidingElements = document.querySelectorAll('.header__search, .main__nav, .footer');
+const cardInfo = document.querySelector('.card-info');
 
 const search = document.querySelector('.header__search');
 const cardList = document.querySelector('.main__list');
 const paginationList = document.querySelector('.footer__list');
+const btnGoBack = document.querySelector('.card-info__button');
 
 init();
 
 let timer;
 search.oninput = onSearch;
+cardList.onclick = onChooseCardItem;
 paginationList.onclick = onChoosePaginationItem;
+btnGoBack.onclick = onBack;
 
-async function getData(queryParam, queryVal) {
-    const queryURL = new URL(mainURL.href);
+async function getData(url, queryParam, queryVal) {
+    const queryURL = new URL(url);
 
     if (queryParam && queryVal) {
         queryURL.searchParams.set(queryParam, queryVal);
@@ -29,13 +45,23 @@ async function getData(queryParam, queryVal) {
 }
 
 function init() {
-    getData('', '').then(drawPage);
+    getData(mainURL).then(drawPage);
 }
 
 function onSearch() {
     clearTimeout(timer);
-    timer = setTimeout(() => getData('search', search.value)
+    timer = setTimeout(() => getData(mainURL, 'search', search.value)
         .then(drawPage), 500);
+}
+
+function onChooseCardItem(event) {
+    const cardItem = event.target.closest('.main__item');
+
+    if (!cardItem) {
+        return;
+    }
+
+    getData(cardItem.dataset.url).then(drawCardInfo);
 }
 
 function onChoosePaginationItem(event) {
@@ -45,7 +71,12 @@ function onChoosePaginationItem(event) {
         return;
     }
 
-    getData('page', paginationItem.textContent).then(drawPage);
+    getData(mainURL, 'page', paginationItem.textContent).then(drawPage);
+}
+
+function onBack() {
+    cardInfo.hidden = true;
+    hidingElements.forEach(el => el.hidden = false);
 }
 
 function drawPage(pageInfo) {
@@ -55,7 +86,7 @@ function drawPage(pageInfo) {
 
 function drawCards(cardsArr) {
     cardList.innerHTML = cardsArr.reduce((prevPersons, person) => prevPersons + `
-        <li class="main__item">${person.name}</li>
+        <li data-url="${person.url}" class="main__item">${person.name}</li>
     `, '');
 }
 
@@ -67,4 +98,15 @@ function drawPagination(paginationItemsAmount) {
             <li class="footer__item ${i === 1 ? 'footer__item_active' : ''}">${i}</li>
         `;
     }
+}
+
+function drawCardInfo(personInfo) {
+    const cardInfoList = document.querySelector('.card-info__list');
+
+    hidingElements.forEach(el => el.hidden = true);
+    cardInfo.hidden = false;
+    cardInfoList.innerHTML = Object.keys(personParams)
+        .reduce((prevParams, param) => prevParams + `
+            <li class=".card-info__item">${personParams[param]} ${personInfo[param]}</li>
+        `, '');
 }
