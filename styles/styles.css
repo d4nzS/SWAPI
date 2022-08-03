@@ -34,10 +34,6 @@ ul {
     list-style-type: none;
 }
 
-li {
-    display: inline;
-}
-
 .container {
     max-width: 1250px;
     padding: 20px 10px 35px;
@@ -79,12 +75,12 @@ li {
 .main__item {
     position: relative;
     height: 300px;
+    cursor: pointer;
     background-image: url(../images/card-image.png);
     background-size: cover;
     background-position: center center;
 }
 .main__item:hover {
-    cursor: pointer;
     -webkit-filter: drop-shadow(0px 20px 140px #7032AC);
             filter: drop-shadow(0px 20px 140px #7032AC);
 }
@@ -107,4 +103,23 @@ li {
 .description__gender {
     font-size: 12px;
     opacity: 0.6;
+}
+
+.footer__list {
+    text-align: center;
+}
+.footer__item {
+    display: inline-block;
+    margin: 0 5px;
+    cursor: pointer;
+    font-size: 14px;
+    line-height: 14px;
+    -webkit-transition: 0.2s ease-out;
+    transition: 0.2s ease-out;
+}
+.footer__item:hover {
+    font-size: 20px;
+}
+.footer__item_active {
+    color: #7032AC;
 }
