@@ -1,3 +1,17 @@
+@font-face {
+  font-family: 'Roboto Regular';
+  src: url(../fonts/Roboto-Regular.ttf);
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Roboto Medium';
+  src: url(../fonts/Roboto-Medium.ttf);
+  font-weight: normal;
+  font-style: normal;
+}
+
 * {
   box-sizing: border-box;
   padding: 0;
@@ -6,33 +20,100 @@
 
 body {
   background: {
-    image: url(../images/background.jpg);
-    color: black;
+    image: url(../images/background1.jpg);
     size: cover;
     position: center center;
     attachment: fixed;
   }
+
+  font-family:  'Roboto Regular', sans-serif;
+  color: #F9F017;
 }
 
 input {
   outline: none;
 }
 
+ul {
+  list-style-type: none;
+}
+
+li {
+  display: inline;
+}
+
 .container {
   max-width: 1250px;
+  padding: 20px 10px 35px;
   margin: 0 auto;
-  padding: 20px 15px;
 }
 
 .header {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  margin-bottom: 35px;
 
   &__search {
-    width: 210px;
+    width: 180px;
     height: 25px;
-    padding: 0 15px;
+    padding: 0 10px;
     border: 3px solid #F9F017;
+  }
+}
+
+.main {
+  min-height: 625px;
+  margin-bottom: 35px;
+
+  &__list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, 220px);
+    justify-content: center;
+    grid-gap: 25px;
+  }
+
+  &__item {
+    position: relative;
+    height: 300px;
+
+    background: {
+      image: url(../images/card-image.png);
+      size: cover;
+      position: center center;
+    }
+
+    &:hover {
+      cursor: pointer;
+      filter: drop-shadow(0px 20px 140px #7032AC);
+    }
+  }
+
+  &__description {
+    position: absolute;
+    bottom: 10px;
+    left: 10px;
+  }
+}
+
+.description {
+  &__name {
+    margin-bottom: 10px;
+
+    font: {
+      family: 'Roboto Medium', sans-serif;
+      size: 20px;
+    }
+  }
+
+  &__birth {
+    margin-bottom: 5px;
+    font-size: 14px;
+    opacity: 0.8;
+  }
+
+  &__gender {
+    font-size: 12px;
+    opacity: 0.6;
   }
 }

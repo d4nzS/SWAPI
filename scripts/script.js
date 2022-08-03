@@ -86,7 +86,13 @@ function drawPage(pageInfo) {
 
 function drawCards(cardsArr) {
     cardList.innerHTML = cardsArr.reduce((prevPersons, person) => prevPersons + `
-        <li data-url="${person.url}" class="main__item">${person.name}</li>
+        <li data-url="${person.url}" class="main__item">
+            <div class="main__description description">
+                <p class="description__name">${person.name}</p>
+                <p class="description__birth">Birth year: ${person.birth_year}</p>
+                <p class="description__gender">Gender: ${person.gender}</p>
+            </div>
+        </li>
     `, '');
 }
 
