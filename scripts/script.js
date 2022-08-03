@@ -30,11 +30,12 @@ cardList.onclick = onChooseCardItem;
 paginationList.onclick = onChoosePaginationItem;
 btnGoBack.onclick = onBack;
 
-async function getData(url, queryParam, queryVal) {
+async function getData(url, queryParams) {
     const queryURL = new URL(url);
 
-    if (queryParam && queryVal) {
-        queryURL.searchParams.set(queryParam, queryVal);
+    if (queryParams) {
+        (Object.keys(queryParams))
+            .forEach(param => queryURL.searchParams.set(param, queryParams[param]));
     }
 
     console.log(queryURL.href); // for tests
@@ -45,13 +46,13 @@ async function getData(url, queryParam, queryVal) {
 }
 
 function init() {
-    getData(mainURL).then(drawPage);
+    getData(mainURL).then(data => drawPage(data, 1));
 }
 
 function onSearch() {
     clearTimeout(timer);
-    timer = setTimeout(() => getData(mainURL, 'search', search.value)
-        .then(drawPage), 500);
+    timer = setTimeout(() => getData(mainURL, { 'search': search.value })
+        .then(data => drawPage(data, 1)), 500);
 }
 
 function onChooseCardItem(event) {
@@ -71,7 +72,10 @@ function onChoosePaginationItem(event) {
         return;
     }
 
-    getData(mainURL, 'page', paginationItem.textContent).then(drawPage);
+    getData(mainURL, {
+        'search': search.value,
+        'page': paginationItem.textContent
+    }).then(data => drawPage(data, +paginationItem.textContent));
 }
 
 function onBack() {
@@ -79,9 +83,9 @@ function onBack() {
     hidingElements.forEach(el => el.hidden = false);
 }
 
-function drawPage(pageInfo) {
+function drawPage(pageInfo, pageNumber) {
     drawCards(pageInfo.results);
-    drawPagination(Math.ceil(pageInfo.count / 10));
+    drawPagination(Math.ceil(pageInfo.count / 10), pageNumber);
 }
 
 function drawCards(cardsArr) {
@@ -96,12 +100,12 @@ function drawCards(cardsArr) {
     `, '');
 }
 
-function drawPagination(paginationItemsAmount) {
+function drawPagination(paginationItemsAmount, activeItem) {
     paginationList.innerHTML = '';
 
     for (let i = 1; i <= paginationItemsAmount; i++) {
         paginationList.innerHTML += `
-            <li class="footer__item ${i === 1 ? 'footer__item_active' : ''}">${i}</li>
+            <li class="footer__item ${i === activeItem ? 'footer__item_active' : ''}">${i}</li>
         `;
     }
 }
