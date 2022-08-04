@@ -34,7 +34,7 @@ async function getData(url, queryParams) {
     const queryURL = new URL(url);
 
     if (queryParams) {
-        (Object.keys(queryParams))
+        Object.keys(queryParams)
             .forEach(param => queryURL.searchParams.set(param, queryParams[param]));
     }
 
