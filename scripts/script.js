@@ -5,13 +5,13 @@ const category = '/people';
 const mainURL = new URL(SWAPI_URL.pathname + category, SWAPI_URL);
 
 const personParams = {
-    name: 'Name',
-    birth_year: 'Birth year',
-    gender: 'Gender',
-    mass: 'Mass',
-    height: 'Height',
-    skin_color: 'Skin color',
-    eye_color: 'Eye color'
+  name: 'Name',
+  birth_year: 'Birth year',
+  gender: 'Gender',
+  mass: 'Mass',
+  height: 'Height',
+  skin_color: 'Skin color',
+  eye_color: 'Eye color'
 };
 
 const hidingElements = document.querySelectorAll('.header__search, .main__nav, .footer');
@@ -31,93 +31,93 @@ paginationList.onclick = onChoosePaginationItem;
 btnGoBack.onclick = onBack;
 
 async function getData(url, queryParams) {
-    const queryURL = new URL(url);
+  const queryURL = new URL(url);
 
-    if (queryParams) {
-        Object.keys(queryParams)
-            .forEach(param => queryURL.searchParams.set(param, queryParams[param]));
-    }
+  if (queryParams) {
+    Object.keys(queryParams)
+      .forEach(param => queryURL.searchParams.set(param, queryParams[param]));
+  }
 
-    const response = await fetch(queryURL.href);
+  const response = await fetch(queryURL.href);
 
-    return await response.json();
+  return await response.json();
 }
 
 function init() {
-    getData(mainURL).then(data => drawPage(data, 1));
+  getData(mainURL).then(data => drawPage(data, 1));
 }
 
 function onSearch() {
-    clearTimeout(timer);
-    timer = setTimeout(() => getData(mainURL, { 'search': search.value })
-        .then(data => drawPage(data, 1)), 500);
+  clearTimeout(timer);
+  timer = setTimeout(() => getData(mainURL, { 'search': search.value })
+    .then(data => drawPage(data, 1)), 500);
 }
 
 function onChooseCardItem(event) {
-    const cardItem = event.target.closest('.main__item');
+  const cardItem = event.target.closest('.main__item');
 
-    if (!cardItem) {
-        return;
-    }
+  if (!cardItem) {
+    return;
+  }
 
-    getData(cardItem.dataset.url).then(drawCardInfo);
+  getData(cardItem.dataset.url).then(drawCardInfo);
 }
 
 function onChoosePaginationItem(event) {
-    const paginationItem = event.target.closest('.footer__item');
+  const paginationItem = event.target.closest('.footer__item');
 
-    if (!paginationItem) {
-        return;
-    }
+  if (!paginationItem) {
+    return;
+  }
 
-    getData(mainURL, {
-        'search': search.value,
-        'page': paginationItem.textContent
-    }).then(data => drawPage(data, +paginationItem.textContent));
+  getData(mainURL, {
+    'search': search.value,
+    'page': paginationItem.textContent
+  }).then(data => drawPage(data, +paginationItem.textContent));
 }
 
 function onBack() {
-    cardInfo.hidden = true;
-    hidingElements.forEach(el => el.hidden = false);
+  cardInfo.hidden = true;
+  hidingElements.forEach(el => el.hidden = false);
 }
 
 function drawPage(pageInfo, pageNumber) {
-    drawCards(pageInfo.results);
-    drawPagination(Math.ceil(pageInfo.count / 10), pageNumber);
+  drawCards(pageInfo.results);
+  drawPagination(Math.ceil(pageInfo.count / 10), pageNumber);
 }
 
 function drawCards(cardsArr) {
-    cardList.innerHTML = cardsArr.reduce((prevPersons, person) => prevPersons + `
-        <li data-url="${person.url}" class="main__item">
-            <div class="main__description description">
-                <p class="description__name">${person.name}</p>
-                <p class="description__birth">Birth year: ${person.birth_year}</p>
-                <p class="description__gender">Gender: ${person.gender}</p>
-            </div>
-        </li>
+  cardList.innerHTML = cardsArr.reduce((prevPersons, person) => prevPersons + `
+      <li data-url="${person.url}" class="main__item">
+        <div class="main__description description">
+          <p class="description__name">${person.name}</p>
+          <p class="description__birth">Birth year: ${person.birth_year}</p>
+          <p class="description__gender">Gender: ${person.gender}</p>
+        </div>
+      </li>
     `, '');
 }
 
 function drawPagination(paginationItemsAmount, activeItem) {
-    paginationList.innerHTML = '';
+  paginationList.innerHTML = '';
 
-    for (let i = 1; i <= paginationItemsAmount; i++) {
-        paginationList.innerHTML += `
-            <li class="footer__item ${i === activeItem ? 'footer__item_active' : ''}">${i}</li>
+  for (let i = 1; i <= paginationItemsAmount; i++) {
+    paginationList.innerHTML += `
+          <li class="footer__item ${i === activeItem ? 'footer__item_active' : ''}">${i}</li>
         `;
-    }
+  }
 }
 
 function drawCardInfo(personInfo) {
-    const cardInfoList = document.querySelector('.card-info__list');
+  const cardInfoList = document.querySelector('.card-info__list');
 
-    hidingElements.forEach(el => el.hidden = true);
-    cardInfo.hidden = false;
-    cardInfoList.innerHTML = Object.keys(personParams)
-        .reduce((prevParams, param) => prevParams + `
-            <li class="card-info__item">
-                <span class="card-info__item_selected">${personParams[param]}</span>
-                <span>${personInfo[param]}</span>
-            </li>
+  hidingElements.forEach(el => el.hidden = true);
+  cardInfo.hidden = false;
+  cardInfoList.innerHTML = Object.keys(personParams)
+    .reduce((prevParams, param) => prevParams + `
+          <li class="card-info__item">
+            <span class="card-info__item_selected">${personParams[param]}</span>
+            <span>${personInfo[param]}</span>
+          </li>
         `, '');
 }
